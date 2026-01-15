@@ -75,9 +75,26 @@ Complete configurations for:
 
 When Oh-My-OpenCode releases new versions:
 
-1. Pull latest changes to your local OMO repo
-2. Use the prompt in `update-prompt.md` to regenerate documentation
-3. Re-upload updated files to your Claude project
+### Prerequisites
+
+You need **both repositories** checked out locally:
+
+```bash
+# Oh-My-OpenCode source (for reading latest changes)
+git clone https://github.com/code-yeongyu/oh-my-opencode.git
+# or: ~/Documents/Projects/oh-my-opencode
+
+# This documentation project (for updating docs)
+git clone https://github.com/PaoloC68/oh-my-opencode-super-expert.git
+# or: ~/Documents/Projects/oh-my-opencode-super-expert
+```
+
+### Update Workflow
+
+1. Pull latest changes in your local OMO repo
+2. Open `update-prompt.md` and follow the instructions
+3. The prompt will diff against the last documented commit and update relevant sections
+4. Re-upload updated files to your Claude project
 
 ## Related Links
 
