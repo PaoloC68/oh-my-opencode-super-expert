@@ -14,10 +14,6 @@
       "model": "google/antigravity-claude-opus-4-5-thinking-high",
       "temperature": 0.1
     },
-    "atlas": {
-      "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "temperature": 0.1
-    },
     "sisyphus-junior": {
       "model": "google/antigravity-claude-sonnet-4-5-thinking",
       "temperature": 0.1

@@ -1,44 +1,27 @@
-# Oh-My-OpenCode Model Overrides Reference
+# Oh-My-OpenCode Model Overrides Guide
 
-> **Last Updated:** 2026-01-27 (Updated for v3.1.2 - Atlas rename, removed agents)  
-> **Based on Commit:** `0d938059f9fc01e925392f1fe0eb47dbda3410f4`
+This guide provides complete configuration examples for overriding agent and category models in Oh-My-OpenCode v3.1.x.
 
-This document provides a complete reference for configuring agent models in Oh-My-OpenCode. 
+## Quick Start
 
-**Recommended Setup:** Use the **Antigravity plugin** to access Claude and Gemini models via Google OAuth, eliminating the need for separate Anthropic/OpenAI API keys.
+### File Locations
 
----
+| File | Location | Purpose |
+|------|----------|---------|
+| `opencode.json` | `~/.config/opencode/opencode.json` | Provider & model definitions |
+| `oh-my-opencode.json` | `~/.config/opencode/oh-my-opencode.json` | Agent & category assignments |
 
-## Recommended: Google Antigravity Setup
+### Configuration Priority
 
-The [opencode-antigravity-auth](https://github.com/NoeFabris/opencode-antigravity-auth) plugin provides:
-
-- **Claude models via Google quota** - Access Claude Opus/Sonnet without Anthropic API credits
-- **Gemini 3 models** - Full access to Gemini 3 Pro and Flash
-- **Multi-account rotation** - Automatic failover when rate-limited
-- **Extended thinking support** - Configurable thinking budgets via variants
-
-### Prerequisites
-
-1. Install the plugin in `~/.config/opencode/opencode.json`:
-   ```json
-   {
-     "plugin": ["opencode-antigravity-auth@beta"]
-   }
-   ```
-
-2. Authenticate:
-   ```bash
-   opencode auth login
-   ```
-
-3. Add models to `~/.config/opencode/opencode.json` (see [Antigravity README](https://github.com/NoeFabris/opencode-antigravity-auth))
+1. Project-level `.opencode/oh-my-opencode.json` (highest)
+2. User-level `~/.config/opencode/oh-my-opencode.json`
+3. Built-in defaults (lowest)
 
 ---
 
-## Quick Fix: Complete Antigravity Config (Recommended)
+## Complete Antigravity Configuration
 
-Copy this to `~/.config/opencode/oh-my-opencode.json`:
+This is the recommended configuration for using Google Antigravity (no API keys required):
 
 ```jsonc
 {
@@ -49,13 +32,15 @@ Copy this to `~/.config/opencode/oh-my-opencode.json`:
     "planner_enabled": true,
     "replace_plan": true
   },
+  "disabled_hooks": [
+    "anthropic-context-window-limit-recovery"
+  ],
   "agents": {
-    // CRITICAL: Agent keys must match EXACTLY as shown below!
-    "Sisyphus": {
+    "sisyphus": {
       "model": "google/antigravity-claude-opus-4-5-thinking-high",
       "temperature": 0.1
     },
-    "Atlas": {
+    "atlas": {
       "model": "google/antigravity-claude-opus-4-5-thinking-high",
       "temperature": 0.1
     },
@@ -63,60 +48,63 @@ Copy this to `~/.config/opencode/oh-my-opencode.json`:
       "model": "google/antigravity-claude-sonnet-4-5-thinking",
       "temperature": 0.1
     },
-    "Prometheus (Planner)": {
+    "prometheus": {
       "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
       "temperature": 0.1
     },
-    // NOTE: These MUST use the FULL names with parentheses!
-    "Metis (Plan Consultant)": {
+    "metis": {
       "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
       "temperature": 0.3
     },
-    "Momus (Plan Reviewer)": {
+    "momus": {
       "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
       "temperature": 0.1
     },
     "oracle": {
-      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "model": "openrouter/openai/gpt-4o",
       "temperature": 0.1
     },
     "librarian": {
-      "model": "google/antigravity-gemini-3-flash",
+      "model": "google/gemini-2.5-flash",
       "temperature": 0.1
     },
     "explore": {
-      "model": "google/antigravity-gemini-3-flash",
+      "model": "google/gemini-2.5-flash",
       "temperature": 0.1
     },
     "multimodal-looker": {
-      "model": "google/antigravity-gemini-3-flash",
+      "model": "google/gemini-2.5-flash",
       "temperature": 0.1
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "google/antigravity-gemini-3-pro-high"
+      "model": "google/antigravity-gemini-3-pro-high",
+      "temperature": 0.7
     },
     "ultrabrain": {
       "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "variant": "xhigh"
+      "temperature": 0.1
     },
     "artistry": {
       "model": "google/antigravity-gemini-3-pro-high",
-      "variant": "max"
+      "temperature": 0.7
     },
     "quick": {
-      "model": "google/antigravity-claude-haiku-4-5"
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.3
     },
     "unspecified-low": {
-      "model": "google/antigravity-claude-sonnet-4-5-thinking"
+      "model": "google/antigravity-claude-sonnet-4-5-thinking",
+      "temperature": 0.1
     },
     "unspecified-high": {
       "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "variant": "max"
+      "temperature": 0.1
     },
     "writing": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.5
     }
   }
 }
@@ -128,16 +116,18 @@ Copy this to `~/.config/opencode/oh-my-opencode.json`:
 
 | Agent | Config Key | Default Model | Provider | Temp |
 |-------|------------|---------------|----------|------|
-| **Sisyphus** | `Sisyphus` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
-| **Atlas** | `Atlas` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
+| **Sisyphus** | `sisyphus` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
+| **Atlas** | `atlas` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
 | **Sisyphus-Junior** | `sisyphus-junior` | anthropic/claude-sonnet-4-5 | Anthropic | 0.1 |
-| **Prometheus** | `Prometheus (Planner)` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
-| **Metis** | `Metis (Plan Consultant)` | anthropic/claude-sonnet-4-5 | Anthropic | 0.3 |
-| **Momus** | `Momus (Plan Reviewer)` | anthropic/claude-sonnet-4-5 | Anthropic | 0.1 |
+| **Prometheus** | `prometheus` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
+| **Metis** | `metis` | anthropic/claude-sonnet-4-5 | Anthropic | 0.3 |
+| **Momus** | `momus` | anthropic/claude-sonnet-4-5 | Anthropic | 0.1 |
 | **Oracle** | `oracle` | openai/gpt-5.2 | OpenAI | 0.1 |
 | **Librarian** | `librarian` | opencode/big-pickle | OpenCode | 0.1 |
 | **Explore** | `explore` | opencode/gpt-5-nano | OpenCode | 0.1 |
 | **Multimodal-Looker** | `multimodal-looker` | google/gemini-3-flash | Google | 0.1 |
+
+> **IMPORTANT:** All agent config keys are **lowercase**. Using `"Sisyphus"` instead of `"sisyphus"` will cause the override to be silently ignored!
 
 ### REMOVED Agents (v3.1.x)
 
@@ -152,7 +142,7 @@ The following agents were **REMOVED** and should be deleted from your config:
 
 | Old Name | New Config Key |
 |----------|----------------|
-| ~~orchestrator-sisyphus~~ | `Atlas` |
+| ~~orchestrator-sisyphus~~ | `atlas` |
 
 ---
 
@@ -174,13 +164,13 @@ The following agents were **REMOVED** and should be deleted from your config:
 
 ### Sisyphus (Primary Executor)
 
-**Config Key:** `Sisyphus`  
+**Config Key:** `sisyphus`  
 **Default Model:** `anthropic/claude-opus-4-5`  
 **Temperature:** `0.1`
 
 ```jsonc
 "agents": {
-  "Sisyphus": {
+  "sisyphus": {
     "model": "google/antigravity-claude-opus-4-5-thinking-high",
     "temperature": 0.1
   }
@@ -193,13 +183,13 @@ The following agents were **REMOVED** and should be deleted from your config:
 
 ### Atlas (Master Orchestrator)
 
-**Config Key:** `Atlas`  
+**Config Key:** `atlas`  
 **Default Model:** `anthropic/claude-opus-4-5`  
 **Temperature:** `0.1`
 
 ```jsonc
 "agents": {
-  "Atlas": {
+  "atlas": {
     "model": "google/antigravity-claude-opus-4-5-thinking-high",
     "temperature": 0.1
   }
@@ -207,8 +197,6 @@ The following agents were **REMOVED** and should be deleted from your config:
 ```
 
 **Role:** Master orchestrator that holds the TODO list and coordinates all specialist agents. Renamed from `orchestrator-sisyphus` in v3.1.x.
-
-**Note:** If you have `orchestrator-sisyphus` in your config, rename it to `Atlas`.
 
 ---
 
@@ -227,19 +215,19 @@ The following agents were **REMOVED** and should be deleted from your config:
 }
 ```
 
-**Role:** Spawned by `delegate_task` tool to execute category-specific tasks. Now can call `delegate_task` for sub-delegation.
+**Role:** Spawned by `delegate_task` tool to execute category-specific tasks. Can call `delegate_task` for sub-delegation.
 
 ---
 
 ### Prometheus (Planner)
 
-**Config Key:** `Prometheus (Planner)`  
+**Config Key:** `prometheus`  
 **Default Model:** `anthropic/claude-opus-4-5`  
 **Temperature:** `0.1`
 
 ```jsonc
 "agents": {
-  "Prometheus (Planner)": {
+  "prometheus": {
     "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
     "temperature": 0.1
   }
@@ -252,13 +240,13 @@ The following agents were **REMOVED** and should be deleted from your config:
 
 ### Metis (Plan Consultant)
 
-**Config Key:** `Metis (Plan Consultant)`  
+**Config Key:** `metis`  
 **Default Model:** `anthropic/claude-sonnet-4-5`  
 **Temperature:** `0.3`
 
 ```jsonc
 "agents": {
-  "Metis (Plan Consultant)": {
+  "metis": {
     "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
     "temperature": 0.3
   }
@@ -271,13 +259,13 @@ The following agents were **REMOVED** and should be deleted from your config:
 
 ### Momus (Plan Reviewer)
 
-**Config Key:** `Momus (Plan Reviewer)`  
+**Config Key:** `momus`  
 **Default Model:** `anthropic/claude-sonnet-4-5`  
 **Temperature:** `0.1`
 
 ```jsonc
 "agents": {
-  "Momus (Plan Reviewer)": {
+  "momus": {
     "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
     "temperature": 0.1
   }
@@ -297,7 +285,7 @@ The following agents were **REMOVED** and should be deleted from your config:
 ```jsonc
 "agents": {
   "oracle": {
-    "model": "google/antigravity-claude-opus-4-5-thinking-high",
+    "model": "openrouter/openai/gpt-4o",
     "temperature": 0.1
   }
 }
@@ -316,7 +304,7 @@ The following agents were **REMOVED** and should be deleted from your config:
 ```jsonc
 "agents": {
   "librarian": {
-    "model": "google/antigravity-gemini-3-flash",
+    "model": "google/gemini-2.5-flash",
     "temperature": 0.1
   }
 }
@@ -335,7 +323,7 @@ The following agents were **REMOVED** and should be deleted from your config:
 ```jsonc
 "agents": {
   "explore": {
-    "model": "google/antigravity-gemini-3-flash",
+    "model": "google/gemini-2.5-flash",
     "temperature": 0.1
   }
 }
@@ -354,7 +342,7 @@ The following agents were **REMOVED** and should be deleted from your config:
 ```jsonc
 "agents": {
   "multimodal-looker": {
-    "model": "google/antigravity-gemini-3-flash",
+    "model": "google/gemini-2.5-flash",
     "temperature": 0.1
   }
 }
@@ -364,21 +352,41 @@ The following agents were **REMOVED** and should be deleted from your config:
 
 ---
 
+## Air-Gapped / Local LLM Configuration
+
+For environments without internet access, set this environment variable:
+
+```bash
+export OPENCODE_DISABLE_MODELS_FETCH=true
+```
+
+See `samples/opencode-air-gapped.json` and `samples/oh-my-opencode-air-gapped.json` for complete configuration examples.
+
+---
+
 ## Migration Guide: v3.0.0-beta.7 → v3.1.x
 
-### Step 1: Rename orchestrator-sisyphus to Atlas
+### Step 1: Fix agent config keys (use lowercase)
 
-**Before:**
+**Before (wrong):**
 ```jsonc
 "agents": {
-  "orchestrator-sisyphus": { ... }
+  "Sisyphus": { ... },
+  "Atlas": { ... },
+  "Prometheus (Planner)": { ... },
+  "Metis (Plan Consultant)": { ... },
+  "Momus (Plan Reviewer)": { ... }
 }
 ```
 
-**After:**
+**After (correct):**
 ```jsonc
 "agents": {
-  "Atlas": { ... }
+  "sisyphus": { ... },
+  "atlas": { ... },
+  "prometheus": { ... },
+  "metis": { ... },
+  "momus": { ... }
 }
 ```
 
@@ -388,7 +396,11 @@ Delete these entries from your config:
 - `frontend-ui-ux-engineer`
 - `document-writer`
 
-### Step 3: Update tool references
+### Step 3: Rename orchestrator-sisyphus
+
+If you have `orchestrator-sisyphus` in your config, rename it to `atlas`.
+
+### Step 4: Update tool references
 
 If you have custom prompts or scripts referencing `sisyphus_task`, update to `delegate_task`.
 
@@ -398,15 +410,15 @@ If you have custom prompts or scripts referencing `sisyphus_task`, update to `de
 
 ### "Model not found" errors
 
-1. Verify config key matches exactly (case-sensitive)
+1. Verify config key is **lowercase** (case-sensitive!)
 2. Check if using Antigravity models without the plugin installed
 3. Run `bunx oh-my-opencode doctor` to check model resolution
 
-### Agent not responding
+### Agent override not working
 
-1. Check model availability with your provider
-2. Verify API key or Antigravity auth
-3. Check `~/.config/opencode/opencode.json` for conflicting model definitions
+1. Config keys must be **exactly** as shown in the table above
+2. Check for typos: `sisyphus` not `Sisyphus` or `sysiphus`
+3. Verify the file is valid JSON (use `jq . oh-my-opencode.json`)
 
 ### Category using wrong model
 
@@ -425,12 +437,12 @@ Category default model takes precedence over parent model. Override in `categori
 ## Changelog
 
 ### v3.1.2 (2026-01-27)
-- **RENAMED:** `orchestrator-sisyphus` → `Atlas`
+- **RENAMED:** `orchestrator-sisyphus` → `atlas`
 - **REMOVED:** `frontend-ui-ux-engineer` (use `visual-engineering` category)
 - **REMOVED:** `document-writer` (use `writing` category)
 - **RENAMED:** `sisyphus_task` → `delegate_task`
-- Updated default category models
-- Added stale session detection for background agents
+- **CLARIFIED:** All agent config keys are lowercase
+- Added air-gapped configuration support
 
 ### v3.0.0-beta.7 (2026-01-14)
 - Initial documented version
