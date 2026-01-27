@@ -158,6 +158,17 @@ git clone https://github.com/PaoloC68/oh-my-opencode-super-expert.git
 3. The prompt will diff against the last documented commit and update relevant sections
 4. Re-upload updated files to your Claude project
 
+## MCP Tools and Plugins
+
+The [`mcp_tools_and_plugins/`](./mcp_tools_and_plugins/) directory contains documentation for MCP servers that enhance OMO:
+
+| Plugin | Description | Air-Gapped |
+|--------|-------------|------------|
+| [Memento](./mcp_tools_and_plugins/memento-local-memory.md) | Local SQLite + BGE-M3 semantic memory | Yes | 
+
+See also:
+- [Memory Protocol](./mcp_tools_and_plugins/MEMORY_PROTOCOL.md) - How to teach agents to use persistent memory
+
 ## Related Links
 
 - [Oh-My-OpenCode Repository](https://github.com/code-yeongyu/oh-my-opencode)
