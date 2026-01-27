@@ -1,7 +1,7 @@
 # Oh-My-OpenCode Model Overrides Reference
 
-> **Last Updated:** 2026-01-15 (Fixed agent config keys)  
-> **Based on Commit:** `abd1ec109264611474120a8136ebc3ae59b8a20f`
+> **Last Updated:** 2026-01-27 (Updated for v3.1.2 - Atlas rename, removed agents)  
+> **Based on Commit:** `0d938059f9fc01e925392f1fe0eb47dbda3410f4`
 
 This document provides a complete reference for configuring agent models in Oh-My-OpenCode. 
 
@@ -55,6 +55,10 @@ Copy this to `~/.config/opencode/oh-my-opencode.json`:
       "model": "google/antigravity-claude-opus-4-5-thinking-high",
       "temperature": 0.1
     },
+    "Atlas": {
+      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "temperature": 0.1
+    },
     "sisyphus-junior": {
       "model": "google/antigravity-claude-sonnet-4-5-thinking",
       "temperature": 0.1
@@ -84,323 +88,354 @@ Copy this to `~/.config/opencode/oh-my-opencode.json`:
       "model": "google/antigravity-gemini-3-flash",
       "temperature": 0.1
     },
-    "frontend-ui-ux-engineer": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.1
-    },
-    "document-writer": {
-      "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.1
-    },
     "multimodal-looker": {
       "model": "google/antigravity-gemini-3-flash",
       "temperature": 0.1
     }
   },
   "categories": {
-    "visual": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.7
-    },
     "visual-engineering": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.7
-    },
-    "business-logic": {
-      "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "temperature": 0.1
+      "model": "google/antigravity-gemini-3-pro-high"
     },
     "ultrabrain": {
       "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "temperature": 0.1
+      "variant": "xhigh"
+    },
+    "artistry": {
+      "model": "google/antigravity-gemini-3-pro-high",
+      "variant": "max"
     },
     "quick": {
-      "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.3
+      "model": "google/antigravity-claude-haiku-4-5"
+    },
+    "unspecified-low": {
+      "model": "google/antigravity-claude-sonnet-4-5-thinking"
+    },
+    "unspecified-high": {
+      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "variant": "max"
     },
     "writing": {
-      "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.5
-    },
-    "most-capable": {
-      "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "temperature": 0.1
+      "model": "google/antigravity-gemini-3-flash"
     }
   }
 }
 ```
 
-**Important:** Set `"google_auth": false` when using Antigravity (the plugin handles auth).
+---
+
+## Summary Table: All Agents
+
+| Agent | Config Key | Default Model | Provider | Temp |
+|-------|------------|---------------|----------|------|
+| **Sisyphus** | `Sisyphus` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
+| **Atlas** | `Atlas` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
+| **Sisyphus-Junior** | `sisyphus-junior` | anthropic/claude-sonnet-4-5 | Anthropic | 0.1 |
+| **Prometheus** | `Prometheus (Planner)` | anthropic/claude-opus-4-5 | Anthropic | 0.1 |
+| **Metis** | `Metis (Plan Consultant)` | anthropic/claude-sonnet-4-5 | Anthropic | 0.3 |
+| **Momus** | `Momus (Plan Reviewer)` | anthropic/claude-sonnet-4-5 | Anthropic | 0.1 |
+| **Oracle** | `oracle` | openai/gpt-5.2 | OpenAI | 0.1 |
+| **Librarian** | `librarian` | opencode/big-pickle | OpenCode | 0.1 |
+| **Explore** | `explore` | opencode/gpt-5-nano | OpenCode | 0.1 |
+| **Multimodal-Looker** | `multimodal-looker` | google/gemini-3-flash | Google | 0.1 |
+
+### REMOVED Agents (v3.1.x)
+
+The following agents were **REMOVED** and should be deleted from your config:
+
+| Agent | Former Config Key | Replacement |
+|-------|-------------------|-------------|
+| ~~frontend-ui-ux-engineer~~ | `frontend-ui-ux-engineer` | Use `visual-engineering` category |
+| ~~document-writer~~ | `document-writer` | Use `writing` category |
+
+### RENAMED Agents (v3.1.x)
+
+| Old Name | New Config Key |
+|----------|----------------|
+| ~~orchestrator-sisyphus~~ | `Atlas` |
 
 ---
 
-## Antigravity Model Reference
+## Summary Table: All Categories
 
-### Claude Models (via Antigravity)
-
-| Model ID | Thinking | Variants | Best For |
-|----------|----------|----------|----------|
-| `google/antigravity-claude-opus-4-5-thinking` | Yes | `low`, `max`, `high` | Primary orchestrator (Sisyphus) |
-| `google/antigravity-claude-sonnet-4-5-thinking` | Yes | `low`, `max`, `high` | Planning agents (Prometheus) |
-| `google/antigravity-claude-sonnet-4-5` | No | - | Fast Claude tasks |
-
-**Variant Suffixes:**
-- `-low`: 8k thinking budget
-- `-high`: 32k thinking budget (recommended for Sisyphus)
-- `-max`: Maximum thinking budget
-
-**Example:** `google/antigravity-claude-opus-4-5-thinking-high`
-
-### Gemini 3 Models (via Antigravity)
-
-| Model ID | Thinking Levels | Best For |
-|----------|-----------------|----------|
-| `google/antigravity-gemini-3-pro` | `low`, `high` | Frontend UI/UX, complex visual tasks |
-| `google/antigravity-gemini-3-flash` | `minimal`, `low`, `medium`, `high` | Fast tasks, research, docs |
-
-**Variant Suffixes:**
-- `-minimal`: Minimal thinking (fastest)
-- `-low`: Light thinking
-- `-medium`: Balanced
-- `-high`: Maximum thinking (best quality)
-
-**Examples:**
-- `google/antigravity-gemini-3-pro-high` - Best for frontend-ui-ux
-- `google/antigravity-gemini-3-flash` - Good for librarian, explore, multimodal
+| Category | Config Key | Default Model | Variant |
+|----------|------------|---------------|---------|
+| **Visual Engineering** | `visual-engineering` | google/gemini-3-pro | - |
+| **Ultrabrain** | `ultrabrain` | openai/gpt-5.2-codex | xhigh |
+| **Artistry** | `artistry` | google/gemini-3-pro | max |
+| **Quick** | `quick` | anthropic/claude-haiku-4-5 | - |
+| **Unspecified Low** | `unspecified-low` | anthropic/claude-sonnet-4-5 | - |
+| **Unspecified High** | `unspecified-high` | anthropic/claude-opus-4-5 | max |
+| **Writing** | `writing` | google/gemini-3-flash | - |
 
 ---
 
-## Complete Agent Model Reference
+## Individual Agent Details
 
-### With Antigravity (Recommended)
+### Sisyphus (Primary Executor)
 
-> **CRITICAL:** Agent keys MUST match exactly as shown below, including capitalization and parentheses!
-
-| Agent | Config Key (EXACT) | Recommended Antigravity Model |
-|-------|-------------------|-------------------------------|
-| **Sisyphus** | `Sisyphus` | `google/antigravity-claude-opus-4-5-thinking-high` |
-| **Sisyphus-Junior** | `sisyphus-junior` | `google/antigravity-claude-sonnet-4-5-thinking` |
-| **Prometheus** | `Prometheus (Planner)` | `google/antigravity-claude-sonnet-4-5-thinking-high` |
-| **Metis** | `Metis (Plan Consultant)` | `google/antigravity-claude-sonnet-4-5-thinking-low` |
-| **Momus** | `Momus (Plan Reviewer)` | `google/antigravity-claude-sonnet-4-5-thinking-low` |
-| **Oracle** | `oracle` | `google/antigravity-claude-opus-4-5-thinking-high` |
-| **Librarian** | `librarian` | `google/antigravity-gemini-3-flash` |
-| **Explore** | `explore` | `google/antigravity-gemini-3-flash` |
-| **Frontend-UI-UX** | `frontend-ui-ux-engineer` | `google/antigravity-gemini-3-pro-high` |
-| **Document-Writer** | `document-writer` | `google/antigravity-gemini-3-flash` |
-| **Multimodal-Looker** | `multimodal-looker` | `google/antigravity-gemini-3-flash` |
-
-### Without Antigravity (Direct API Keys)
-
-| Agent | Config Key (EXACT) | Default Model | Provider |
-|-------|-------------------|---------------|----------|
-| **Sisyphus** | `Sisyphus` | `anthropic/claude-opus-4-5` | Anthropic |
-| **Sisyphus-Junior** | `sisyphus-junior` | `anthropic/claude-sonnet-4-5` | Anthropic |
-| **Prometheus** | `Prometheus (Planner)` | `anthropic/claude-opus-4-5` | Anthropic |
-| **Metis** | `Metis (Plan Consultant)` | `anthropic/claude-sonnet-4-5` | Anthropic |
-| **Momus** | `Momus (Plan Reviewer)` | `anthropic/claude-sonnet-4-5` | Anthropic |
-| **Oracle** | `oracle` | `openai/gpt-5.2` | OpenAI |
-| **Librarian** | `librarian` | `opencode/glm-4.7-free` | OpenCode |
-| **Explore** | `explore` | `opencode/grok-code` | OpenCode |
-| **Frontend-UI-UX** | `frontend-ui-ux-engineer` | `google/gemini-3-pro-preview` | Google |
-| **Document-Writer** | `document-writer` | `google/gemini-3-pro-preview` | Google |
-| **Multimodal-Looker** | `multimodal-looker` | `google/gemini-3-flash` | Google |
-
----
-
-## Category Model Overrides
-
-Categories spawn `Sisyphus-Junior` with optimized settings:
-
-### With Antigravity
+**Config Key:** `Sisyphus`  
+**Default Model:** `anthropic/claude-opus-4-5`  
+**Temperature:** `0.1`
 
 ```jsonc
-{
-  "categories": {
-    "visual": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.7
-    },
-    "visual-engineering": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.7
-    },
-    "ultrabrain": {
-      "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "temperature": 0.1
-    },
-    "quick": {
-      "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.3
-    },
-    "writing": {
-      "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.5
-    },
-    "most-capable": {
-      "model": "google/antigravity-claude-opus-4-5-thinking-high",
-      "temperature": 0.1
-    }
+"agents": {
+  "Sisyphus": {
+    "model": "google/antigravity-claude-opus-4-5-thinking-high",
+    "temperature": 0.1
   }
 }
 ```
 
-### Without Antigravity
-
-| Category | Default Model | Temperature | Purpose |
-|----------|---------------|-------------|---------|
-| `visual-engineering` | `google/gemini-3-pro` | 0.7 | Frontend, UI/UX |
-| `ultrabrain` | `openai/gpt-5.2` | 0.1 | Architecture, logic |
-| `artistry` | `google/gemini-3-pro` | 0.9 | Creative work |
-| `quick` | `anthropic/claude-haiku` | 0.3 | Simple tasks |
-| `writing` | `google/gemini-3-flash` | 0.5 | Documentation |
-| `most-capable` | `anthropic/claude-opus` | 0.1 | Hardest tasks |
+**Role:** Primary implementation agent. Has HARD BLOCK for frontend visual changes (must delegate to visual-engineering category).
 
 ---
 
-## Provider Reference
+### Atlas (Master Orchestrator)
 
-### Antigravity Models (via Google OAuth)
-
-| Prefix | Quota Source | Notes |
-|--------|--------------|-------|
-| `google/antigravity-claude-*` | Antigravity | Claude models via Google quota |
-| `google/antigravity-gemini-3-*` | Antigravity | Gemini 3 models |
-| `google/gemini-*-preview` | Gemini CLI | Alternative Gemini quota pool |
-
-### Direct API Providers
-
-| Provider | Prefix | Notes |
-|----------|--------|-------|
-| Anthropic | `anthropic/` | Requires ANTHROPIC_API_KEY |
-| OpenAI | `openai/` | Requires OPENAI_API_KEY |
-| Google | `google/` | Requires GOOGLE_API_KEY |
-| OpenCode | `opencode/` | Free/included models |
-
-### Available Antigravity Models
-
-**Claude (Antigravity):**
-- `google/antigravity-claude-opus-4-5-thinking` + variants (`-low`, `-max`, `-high`)
-- `google/antigravity-claude-sonnet-4-5-thinking` + variants (`-low`, `-max`, `-high`)
-- `google/antigravity-claude-sonnet-4-5` (no thinking)
-
-**Gemini 3 (Antigravity):**
-- `google/antigravity-gemini-3-pro` + variants (`-low`, `-high`)
-- `google/antigravity-gemini-3-flash` + variants (`-minimal`, `-low`, `-medium`, `-high`)
-
-**Gemini CLI (Alternative quota):**
-- `google/gemini-2.5-flash`
-- `google/gemini-2.5-pro`
-- `google/gemini-3-flash-preview`
-- `google/gemini-3-pro-preview`
-
-**OpenCode (Free):**
-- `opencode/glm-4.7-free` - Free research model
-- `opencode/grok-code` - Free code exploration
-
----
-
-## Disabling Agents
-
-If you don't want an agent to be available:
+**Config Key:** `Atlas`  
+**Default Model:** `anthropic/claude-opus-4-5`  
+**Temperature:** `0.1`
 
 ```jsonc
-{
-  "agents": {
-    // CRITICAL: Use EXACT agent keys with parentheses!
-    "Prometheus (Planner)": { "disabled": true },
-    "Metis (Plan Consultant)": { "disabled": true },
-    "Momus (Plan Reviewer)": { "disabled": true }
+"agents": {
+  "Atlas": {
+    "model": "google/antigravity-claude-opus-4-5-thinking-high",
+    "temperature": 0.1
   }
 }
 ```
 
-Or disable the entire planning system:
+**Role:** Master orchestrator that holds the TODO list and coordinates all specialist agents. Renamed from `orchestrator-sisyphus` in v3.1.x.
+
+**Note:** If you have `orchestrator-sisyphus` in your config, rename it to `Atlas`.
+
+---
+
+### Sisyphus-Junior (Category Executor)
+
+**Config Key:** `sisyphus-junior`  
+**Default Model:** `anthropic/claude-sonnet-4-5`  
+**Temperature:** `0.1`
 
 ```jsonc
-{
-  "sisyphus_agent": {
-    "planner_enabled": false
+"agents": {
+  "sisyphus-junior": {
+    "model": "google/antigravity-claude-sonnet-4-5-thinking",
+    "temperature": 0.1
   }
 }
 ```
+
+**Role:** Spawned by `delegate_task` tool to execute category-specific tasks. Now can call `delegate_task` for sub-delegation.
+
+---
+
+### Prometheus (Planner)
+
+**Config Key:** `Prometheus (Planner)`  
+**Default Model:** `anthropic/claude-opus-4-5`  
+**Temperature:** `0.1`
+
+```jsonc
+"agents": {
+  "Prometheus (Planner)": {
+    "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
+    "temperature": 0.1
+  }
+}
+```
+
+**Role:** Pure strategic planner. Never writes code. Creates detailed plans with dependency graphs and parallel execution analysis.
+
+---
+
+### Metis (Plan Consultant)
+
+**Config Key:** `Metis (Plan Consultant)`  
+**Default Model:** `anthropic/claude-sonnet-4-5`  
+**Temperature:** `0.3`
+
+```jsonc
+"agents": {
+  "Metis (Plan Consultant)": {
+    "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
+    "temperature": 0.3
+  }
+}
+```
+
+**Role:** Pre-planning analysis and gap detection. Higher temperature (0.3) for creative problem identification.
+
+---
+
+### Momus (Plan Reviewer)
+
+**Config Key:** `Momus (Plan Reviewer)`  
+**Default Model:** `anthropic/claude-sonnet-4-5`  
+**Temperature:** `0.1`
+
+```jsonc
+"agents": {
+  "Momus (Plan Reviewer)": {
+    "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
+    "temperature": 0.1
+  }
+}
+```
+
+**Role:** Ruthless plan validator. Constrained to evaluate documentation, not design direction.
+
+---
+
+### Oracle (Debugger)
+
+**Config Key:** `oracle`  
+**Default Model:** `openai/gpt-5.2`  
+**Temperature:** `0.1`
+
+```jsonc
+"agents": {
+  "oracle": {
+    "model": "google/antigravity-claude-opus-4-5-thinking-high",
+    "temperature": 0.1
+  }
+}
+```
+
+**Role:** Consultation and debugging specialist. Tool-restricted: no write, edit, task, or delegate_task.
+
+---
+
+### Librarian (Research)
+
+**Config Key:** `librarian`  
+**Default Model:** `opencode/big-pickle`  
+**Temperature:** `0.1`
+
+```jsonc
+"agents": {
+  "librarian": {
+    "model": "google/antigravity-gemini-3-flash",
+    "temperature": 0.1
+  }
+}
+```
+
+**Role:** Multi-repo research via GitHub CLI and Context7. Uses dynamic year instead of hardcoded dates.
+
+---
+
+### Explore (Search)
+
+**Config Key:** `explore`  
+**Default Model:** `opencode/gpt-5-nano`  
+**Temperature:** `0.1`
+
+```jsonc
+"agents": {
+  "explore": {
+    "model": "google/antigravity-gemini-3-flash",
+    "temperature": 0.1
+  }
+}
+```
+
+**Role:** Fast contextual grep for code exploration.
+
+---
+
+### Multimodal-Looker (Vision)
+
+**Config Key:** `multimodal-looker`  
+**Default Model:** `google/gemini-3-flash`  
+**Temperature:** `0.1`
+
+```jsonc
+"agents": {
+  "multimodal-looker": {
+    "model": "google/antigravity-gemini-3-flash",
+    "temperature": 0.1
+  }
+}
+```
+
+**Role:** PDF and image analysis. Restricted to read-only tool access.
+
+---
+
+## Migration Guide: v3.0.0-beta.7 → v3.1.x
+
+### Step 1: Rename orchestrator-sisyphus to Atlas
+
+**Before:**
+```jsonc
+"agents": {
+  "orchestrator-sisyphus": { ... }
+}
+```
+
+**After:**
+```jsonc
+"agents": {
+  "Atlas": { ... }
+}
+```
+
+### Step 2: Remove deprecated agents
+
+Delete these entries from your config:
+- `frontend-ui-ux-engineer`
+- `document-writer`
+
+### Step 3: Update tool references
+
+If you have custom prompts or scripts referencing `sisyphus_task`, update to `delegate_task`.
 
 ---
 
 ## Troubleshooting
 
-### "No API credits" Error
+### "Model not found" errors
 
-**With Antigravity:** Usually means rate limit. Add more Google accounts:
-```bash
-opencode auth login
-```
+1. Verify config key matches exactly (case-sensitive)
+2. Check if using Antigravity models without the plugin installed
+3. Run `bunx oh-my-opencode doctor` to check model resolution
 
-**Without Antigravity:** Override to a provider you have credits for.
+### Agent not responding
 
-### "Model not found" for Antigravity
+1. Check model availability with your provider
+2. Verify API key or Antigravity auth
+3. Check `~/.config/opencode/opencode.json` for conflicting model definitions
 
-1. Ensure plugin is installed: `"plugin": ["opencode-antigravity-auth@beta"]`
-2. Ensure models are defined in `~/.config/opencode/opencode.json`
-3. Run `opencode auth login` to authenticate
+### Category using wrong model
 
-### Rate Limiting with Parallel Agents
+Category default model takes precedence over parent model. Override in `categories` section:
 
-When spawning multiple subagents, enable PID offset in `~/.config/opencode/antigravity.json`:
-
-```json
-{
-  "pid_offset_enabled": true,
-  "account_selection_strategy": "round-robin"
+```jsonc
+"categories": {
+  "quick": {
+    "model": "your-preferred-model"
+  }
 }
 ```
 
-Or add more Google accounts via `opencode auth login`.
+---
 
-### Config Not Applied
+## Changelog
 
-**Priority order (highest wins):**
-1. `.opencode/oh-my-opencode.json` (project)
-2. `~/.config/opencode/oh-my-opencode.json` (user)
+### v3.1.2 (2026-01-27)
+- **RENAMED:** `orchestrator-sisyphus` → `Atlas`
+- **REMOVED:** `frontend-ui-ux-engineer` (use `visual-engineering` category)
+- **REMOVED:** `document-writer` (use `writing` category)
+- **RENAMED:** `sisyphus_task` → `delegate_task`
+- Updated default category models
+- Added stale session detection for background agents
+
+### v3.0.0-beta.7 (2026-01-14)
+- Initial documented version
 
 ---
 
-## Summary Table
-
-### Recommended (Antigravity)
-
-> **CRITICAL:** Use EXACT config keys. `metis` ≠ `Metis (Plan Consultant)`!
-
-| Agent | Config Key (EXACT) | Recommended Model |
-|-------|-------------------|-------------------|
-| Sisyphus | `Sisyphus` | `google/antigravity-claude-opus-4-5-thinking-high` |
-| Sisyphus-Junior | `sisyphus-junior` | `google/antigravity-claude-sonnet-4-5-thinking` |
-| Prometheus | `Prometheus (Planner)` | `google/antigravity-claude-sonnet-4-5-thinking-high` |
-| Metis | `Metis (Plan Consultant)` | `google/antigravity-claude-sonnet-4-5-thinking-low` |
-| Momus | `Momus (Plan Reviewer)` | `google/antigravity-claude-sonnet-4-5-thinking-low` |
-| Oracle | `oracle` | `google/antigravity-claude-opus-4-5-thinking-high` |
-| Librarian | `librarian` | `google/antigravity-gemini-3-flash` |
-| Explore | `explore` | `google/antigravity-gemini-3-flash` |
-| Frontend-UI-UX | `frontend-ui-ux-engineer` | `google/antigravity-gemini-3-pro-high` |
-| Document-Writer | `document-writer` | `google/antigravity-gemini-3-flash` |
-| Multimodal-Looker | `multimodal-looker` | `google/antigravity-gemini-3-flash` |
-
-### Default (Without Antigravity)
-
-| Agent | Config Key (EXACT) | Default | Provider |
-|-------|-------------------|---------|----------|
-| Sisyphus | `Sisyphus` | claude-opus-4-5 | Anthropic |
-| Sisyphus-Junior | `sisyphus-junior` | claude-sonnet-4-5 | Anthropic |
-| Prometheus | `Prometheus (Planner)` | claude-opus-4-5 | Anthropic |
-| Metis | `Metis (Plan Consultant)` | claude-sonnet-4-5 | Anthropic |
-| Momus | `Momus (Plan Reviewer)` | claude-sonnet-4-5 | Anthropic |
-| Oracle | `oracle` | gpt-5.2 | OpenAI |
-| Librarian | `librarian` | glm-4.7-free | OpenCode |
-| Explore | `explore` | grok-code | OpenCode |
-| Frontend-UI-UX | `frontend-ui-ux-engineer` | gemini-3-pro-preview | Google |
-| Document-Writer | `document-writer` | gemini-3-pro-preview | Google |
-| Multimodal-Looker | `multimodal-looker` | gemini-3-flash | Google |
-
----
-
-*This file is maintained by the update-prompt.md process. When agents are added or removed in oh-my-opencode, this table should be updated accordingly.*
+> **Based on Commit:** `0d938059f9fc01e925392f1fe0eb47dbda3410f4`  
+> **Documentation Version:** 3.1.2

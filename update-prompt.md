@@ -1,29 +1,9 @@
-# Oh-My-OpenCode Documentation Update Prompt
-
-Use this prompt whenever you want to update the documentation files after pulling new changes from the repository.
-
-**Files to maintain:**
-- `oh-my-opencode-super-expert.md` - Comprehensive reference
-- `models_overrides.md` - Agent model override reference
-
----
-
-## Current State
-
-**Last documented commit:** `abd1ec109264611474120a8136ebc3ae59b8a20f`
-
----
-
-## Instructions for Claude
-
-Copy the following prompt and paste it into a new Claude conversation with the Oh-My-OpenCode Super-Expert project:
-
----
-
 ### UPDATE PROMPT
 
 ```
 I need you to update the oh-my-opencode-super-expert.md documentation based on recent changes to the repository.
+
+Use the iterm_mcp to access the filesystem
 
 ## Step 1: Detect Changes
 
@@ -36,10 +16,10 @@ cd /Users/paolo/Documents/Projects/oh-my-opencode
 git rev-parse HEAD
 
 # See what changed since last documented commit
-git diff abd1ec109264611474120a8136ebc3ae59b8a20f..HEAD --stat
+git diff 0d938059f9fc01e925392f1fe0eb47dbda3410f4..HEAD --stat
 
 # See commit messages for context
-git log abd1ec109264611474120a8136ebc3ae59b8a20f..HEAD --oneline
+git log 0d938059f9fc01e925392f1fe0eb47dbda3410f4..HEAD --oneline
 ```
 
 ## Step 2: Analyze Changed Areas
@@ -123,7 +103,7 @@ When reviewing changes, pay special attention to:
 - [ ] New tools in `src/tools/index.ts`
 - [ ] New skills in `src/features/builtin-skills/`
 - [ ] New MCPs in `src/mcp/`
-- [ ] Changed categories in `src/tools/sisyphus-task/`
+- [ ] Changed categories in `src/tools/delegate-task/`
 - [ ] New anti-patterns mentioned in AGENTS.md files
 - [ ] Version bump in `package.json`
 
@@ -138,7 +118,7 @@ cd /Users/paolo/Documents/Projects/oh-my-opencode
 
 # Compare current to documented
 CURRENT=$(git rev-parse HEAD)
-DOCUMENTED="abd1ec109264611474120a8136ebc3ae59b8a20f"
+DOCUMENTED="0d938059f9fc01e925392f1fe0eb47dbda3410f4"
 
 if [ "$CURRENT" = "$DOCUMENTED" ]; then
   echo "Documentation is up to date!"
@@ -156,7 +136,4 @@ fi
 | Date | Commit | Version | Notes |
 |------|--------|---------|-------|
 | 2026-01-14 | abd1ec10 | 3.0.0-beta.7 | Initial documentation |
-
----
-
-*Keep this file updated after each documentation refresh.*
+| 2026-01-27 | 0d938059 | 3.1.2 | Atlas rename, removed agents, delegate_task rename |

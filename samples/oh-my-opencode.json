@@ -1,0 +1,92 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "google_auth": false,
+  "sisyphus_agent": {
+    "disabled": false,
+    "planner_enabled": true,
+    "replace_plan": true
+  },
+  "disabled_hooks": [
+    "anthropic-context-window-limit-recovery"
+  ],
+  "agents": {
+    "sisyphus": {
+      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "temperature": 0.1
+    },
+    "atlas": {
+      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "temperature": 0.1
+    },
+    "sisyphus-junior": {
+      "model": "google/antigravity-claude-sonnet-4-5-thinking",
+      "temperature": 0.1
+    },
+    "prometheus": {
+      "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
+      "temperature": 0.1
+    },
+    "metis": {
+      "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
+      "temperature": 0.3
+    },
+    "momus": {
+      "model": "google/antigravity-claude-sonnet-4-5-thinking-low",
+      "temperature": 0.1
+    },
+    "oracle": {
+      "model": "openrouter/openai/gpt-4o",
+      "temperature": 0.1
+    },
+    "librarian": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1
+    },
+    "explore": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1
+    },
+    "frontend-ui-ux-engineer": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1
+    },
+    "document-writer": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1
+    },
+    "multimodal-looker": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1
+    }
+  },
+  "categories": {
+    "visual": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.7
+    },
+    "visual-engineering": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.7
+    },
+    "business-logic": {
+      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "temperature": 0.1
+    },
+    "ultrabrain": {
+      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "temperature": 0.1
+    },
+    "quick": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.3
+    },
+    "writing": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.5
+    },
+    "most-capable": {
+      "model": "google/antigravity-claude-opus-4-5-thinking-high",
+      "temperature": 0.1
+    }
+  }
+}

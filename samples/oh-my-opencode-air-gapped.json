@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "google_auth": false,
+  "sisyphus_agent": {
+    "disabled": false,
+    "planner_enabled": true,
+    "replace_plan": true
+  },
+  "agents": {
+    "sisyphus": {
+      "model": "my-provider/Qwen3-235B",
+      "run_in_background": true,
+      "max_tokens": 4096,
+      "temperature": 0.1
+    },
+    "atlas": {
+      "model": "my-provider/Qwen3-235B",
+      "run_in_background": true,
+      "max_tokens": 4096,
+      "temperature": 0.1
+    },
+    "prometheus": {
+      "model": "my-provider/Qwen3-235B",
+      "temperature": 0.1
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "my-provider/Qwen3-235B"
+    },
+    "ultrabrain": {
+      "model": "my-provider/Qwen3-235B"
+    },
+    "business-logic": {
+      "model": "my-provider/Qwen3-235B"
+    },
+    "quick": {
+      "model": "my-provider/Qwen3-235B"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "oh-my-opencode@3.1.2"
+  ],
+  "provider": {
+    "my-provider": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local provider",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1",
+        "apiKey": "not-needed"
+      },
+      "models": {
+        "Qwen3-235B": {
+          "name": "Qwen3 235B",
+          "limit": {
+            "context": 131072,
+            "output": 16384
+          },
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          }
+        },
+        "Qwen3-32B": {
+          "name": "Qwen3 32B (Fast)",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          },
+          "modalities": {
+            "input": ["text"],
+            "output": ["text"]
+          }
+        }
+      }
+    }
+  },
+  "autoupdate": false
+}

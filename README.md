@@ -21,6 +21,17 @@ This project provides comprehensive reference documentation for Claude Desktop t
 | `models_overrides.md` | Complete model override configurations (especially for Antigravity) |
 | `update-prompt.md` | Instructions for updating docs when OMO changes |
 
+## Sample Configurations
+
+The `samples/` directory contains tested configuration examples:
+
+| File | Purpose |
+|------|---------|
+| `opencode.json` | Working config with Antigravity + OpenRouter |
+| `oh-my-opencode.json` | Working OMO config for cloud providers |
+| `opencode-air-gapped.json` | Config for air-gapped/local LLM environments |
+| `oh-my-opencode-air-gapped.json` | OMO config for air-gapped/local LLM environments |
+
 ## Setup
 
 ### 1. Create a Claude Desktop Project
@@ -47,29 +58,80 @@ Now you can ask Claude about:
 - "How do I delegate frontend work properly?"
 - "What anti-patterns should I avoid?"
 
+## Air-Gapped / Local LLM Setup
+
+For environments without internet access or when using local LLMs (e.g., via LM Studio, Ollama, vLLM):
+
+### Required Environment Variable
+
+**You must set this environment variable before running OpenCode:**
+
+```bash
+export OPENCODE_DISABLE_MODELS_FETCH=true
+```
+
+This prevents OpenCode from attempting to fetch model definitions from the internet.
+
+Add to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.):
+
+```bash
+# For air-gapped OpenCode environments
+export OPENCODE_DISABLE_MODELS_FETCH=true
+```
+
+### Configuration Files
+
+1. Copy `samples/opencode-air-gapped.json` to `~/.config/opencode/opencode.json`
+2. Copy `samples/oh-my-opencode-air-gapped.json` to `~/.config/opencode/oh-my-opencode.json`
+3. Adjust the `baseURL` in `opencode.json` to match your local LLM server:
+   - LM Studio: `http://127.0.0.1:1234/v1`
+   - Ollama: `http://127.0.0.1:11434/v1`
+   - vLLM: `http://127.0.0.1:8000/v1`
+
+4. Update model names to match what your local server provides
+
+### Air-Gapped Config Structure
+
+The air-gapped configs follow the same structure as cloud configs:
+
+- **opencode.json**: Defines the provider and available models
+- **oh-my-opencode.json**: Assigns models to agents and categories
+
+```
+~/.config/opencode/
+├── opencode.json           # Provider & model definitions
+└── oh-my-opencode.json     # Agent & category assignments
+```
+
 ## Key Features Covered
 
 ### Agent System
-11 specialized agents including Sisyphus (orchestrator), Oracle (debugger), Librarian (researcher), and more.
+10 specialized agents including Sisyphus (executor), Atlas (orchestrator), Oracle (debugger), Librarian (researcher), and more.
 
 ### Model Overrides
 Complete configurations for:
 - **Google Antigravity** - Use Claude/Gemini via Google quota (no API keys!)
 - Direct API providers (Anthropic, OpenAI, Google)
+- **Local LLMs** - Air-gapped environments with local model servers
 - Custom model assignments per agent
 
 ### Critical Knowledge
 
-**Agent Config Keys (EXACT format required):**
+**Agent Config Keys (lowercase in oh-my-opencode.json):**
 | Agent | Config Key |
 |-------|------------|
-| Sisyphus | `Sisyphus` |
-| Prometheus | `Prometheus (Planner)` |
-| Metis | `Metis (Plan Consultant)` |
-| Momus | `Momus (Plan Reviewer)` |
+| Sisyphus | `sisyphus` |
+| Atlas | `atlas` |
+| Prometheus | `prometheus` |
+| Metis | `metis` |
+| Momus | `momus` |
 | Oracle | `oracle` |
+| Librarian | `librarian` |
+| Explore | `explore` |
+| Multimodal-Looker | `multimodal-looker` |
+| Sisyphus-Junior | `sisyphus-junior` |
 
-> **Warning**: Using wrong keys like `metis` instead of `Metis (Plan Consultant)` will cause overrides to silently fail!
+> **Note**: v3.1.x removed `frontend-ui-ux-engineer` and `document-writer` agents. Use the `visual-engineering` and `writing` categories instead.
 
 ## Keeping Documentation Updated
 
@@ -108,4 +170,4 @@ MIT
 
 ---
 
-*Based on Oh-My-OpenCode commit: `abd1ec109264611474120a8136ebc3ae59b8a20f`*
+*Based on Oh-My-OpenCode v3.1.2 - commit: `0d938059f9fc01e925392f1fe0eb47dbda3410f4`*
