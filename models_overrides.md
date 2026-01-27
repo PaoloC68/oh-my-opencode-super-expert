@@ -408,11 +408,77 @@ If you have custom prompts or scripts referencing `sisyphus_task`, update to `de
 
 ## Troubleshooting
 
+### ⚠️ CRITICAL: Model Silently Fails to Load (v3.1.2+)
+
+**Symptom:** An agent's model doesn't load, but there's no error message.
+
+**Most Common Cause:** Invalid configuration parameters in the `agents` section.
+
+OMO v3.1.2 introduced **strict schema validation**. Any unrecognized parameter will cause the model to **silently fail to load**.
+
+**Example of BROKEN config:**
+```jsonc
+"agents": {
+  "sisyphus": {
+    "model": "google/antigravity-claude-opus-4-5-thinking-high",
+    "temperature": 0.1,
+    "thinking": {  // ❌ INVALID - causes silent failure!
+      "type": "enabled",
+      "budgetTokens": 10000
+    }
+  }
+}
+```
+
+**ALLOWED parameters in agents section:**
+- `model`
+- `variant`
+- `temperature`
+- `top_p`
+- `prompt`
+- `prompt_append`
+- `tools`
+- `disable`
+- `description`
+- `mode`
+- `color`
+- `permission`
+
+**That's it!** Any other key (like `thinking`, `maxTokens`, `thinkingLevel`, etc.) will break model loading.
+
+**Where to put thinking config instead:**
+
+Thinking/reasoning settings belong in `opencode.json` model definitions, NOT in `oh-my-opencode.json`:
+
+```jsonc
+// opencode.json - CORRECT place for thinking config
+"provider": {
+  "google": {
+    "models": {
+      "antigravity-claude-opus-4-5-thinking-high": {
+        "options": {
+          "thinkingLevel": "high"
+        }
+      }
+    }
+  }
+}
+```
+
+**Quick validation command:**
+```bash
+# Check for invalid keys in your config
+jq '.agents | to_entries[] | {agent: .key, invalid_keys: (.value | keys - ["model","variant","temperature","top_p","prompt","prompt_append","tools","disable","description","mode","color","permission"])}' ~/.config/opencode/oh-my-opencode.json
+```
+
+---
+
 ### "Model not found" errors
 
 1. Verify config key is **lowercase** (case-sensitive!)
-2. Check if using Antigravity models without the plugin installed
-3. Run `bunx oh-my-opencode doctor` to check model resolution
+2. **Check for invalid parameters** (see above - most common issue!)
+3. Check if using Antigravity models without the plugin installed
+4. Run `bunx oh-my-opencode doctor` to check model resolution
 
 ### Agent override not working
 
@@ -442,6 +508,7 @@ Category default model takes precedence over parent model. Override in `categori
 - **REMOVED:** `document-writer` (use `writing` category)
 - **RENAMED:** `sisyphus_task` → `delegate_task`
 - **CLARIFIED:** All agent config keys are lowercase
+- **BREAKING:** Strict config parameter filtering - invalid keys cause silent model loading failures
 - Added air-gapped configuration support
 
 ### v3.0.0-beta.7 (2026-01-14)
