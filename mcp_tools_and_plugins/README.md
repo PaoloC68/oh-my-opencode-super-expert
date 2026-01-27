@@ -1,13 +1,12 @@
 # MCP Tools and Plugins for Oh-My-OpenCode
 
-This directory contains documentation and configuration guides for MCP (Model Context Protocol) servers that enhance Oh-My-OpenCode capabilities.
+This directory contains guides for integrating MCP (Model Context Protocol) servers with Oh-My-OpenCode.
 
-## Available Plugins
+## Available Guides
 
-### 
-| Plugin | Description | Air-Gapped |
-|--------|-------------|------------|
-| [Memento](./memento-local-memory.md) | Local SQLite + BGE-M3 semantic memory | Yes | 
+### Memory Systems
+
+- [memento-local-memory.md](./memento-local-memory.md) - Local SQLite-based persistent memory with BGE-M3 embeddings (air-gapped compatible)
 
 ### Memory Protocol
 
@@ -19,15 +18,37 @@ This directory contains documentation and configuration guides for MCP (Model Co
 # 1. Create storage directory
 mkdir -p ~/.local/share/memento
 
-# 2. Add to ~/.config/opencode/mcp.json
+# 2. Add to opencode.json (NOT a separate mcp.json file!)
+```
+
+Add the following to `~/.config/opencode/opencode.json` or `.opencode/opencode.json`:
+
+```jsonc
 {
-  "mcpServers": {
+  "mcp": {
     "memory": {
-      "command": "npx",
-      "args": ["@iachilles/memento@latest"],
-      "env": {
-        "MEMORY_DB_PATH": "~/.local/share/memento/memory.db"
-      }
+      "type": "local",
+      "command": ["npx", "@iachilles/memento@latest"],
+      "environment": {
+        "MEMORY_DB_PATH": "/absolute/path/to/.local/share/memento/memory.db"
+      },
+      "enabled": true
+    }
+  }
+}
+```
+
+> **⚠️ Note**: Use `environment` (not `env`) and absolute paths (not `~`).
+
+## Adding MCP Integration to OMO Agents
+
+To make an agent memory-aware, add to `oh-my-opencode.json`:
+
+```jsonc
+{
+  "agents": {
+    "sisyphus": {
+      "prompt_append": "\n\nYou have access to persistent memory via the 'memory' MCP server..."
     }
   }
 }
@@ -37,13 +58,44 @@ mkdir -p ~/.local/share/memento
 
 When documenting new MCP plugins:
 
-1. Create a `<plugin-name>.md` file with installation and configuratio1. Create a `<plugin-name>.md` file with es
+1. Create a `<plugin-name>.md` file with installation and configuration
+2. Include OpenCode MCP config format (with `type`, `command`, `environment`)
 3. Document all available tools
-4. Add OMO agent integration examples
+4. Add OMO agent integration examples (using `prompt_append`)
 5. Update this README
+
+## Configuration Reference
+
+### OpenCode MCP Format
+
+```jsonc
+{
+  "mcp": {
+    "server-name": {
+      "type": "local",           // or "remote"
+      "command": ["cmd", "args"],
+      "environment": {           // NOT "env"!
+        "VAR": "value"
+      },
+      "enabled": true,
+      "timeout": 5000            // optional, in ms
+    }
+  }
+}
+```
+
+### OMO Agent Config (allowed keys only)
+
+In `oh-my-opencode.json` agents section, only these keys are valid:
+- `model`, `variant`, `temperature`, `top_p`
+- `prompt`, `prompt_append`
+- `tools`, `disable`, `description`
+- `mode`, `color`, `permission`
+
+**Invalid keys** like `thinking`, `maxTokens` will cause **silent model loading failure**.
 
 ## See Also
 
-- [OMO Configuration Guide](../samples/)
-- [OMO Configurdes](..-models_overrides.md)
+- [OMO Configuration Guide](../configurations.md)
+- [Model Overrides](../models_overrides.md)
 - [Main Documentation](../oh-my-opencode-super-expert.md)
