@@ -48,7 +48,7 @@ To make an agent memory-aware, add to `oh-my-opencode.json`:
 {
   "agents": {
     "sisyphus": {
-      "prompt_append": "\n\nYou have access to persistent memory via the 'memory' MCP server..."
+      "prompt_append": "\n\nYou have access to a persistent memory system via the 'memory' MCP server. At session start, use search_nodes to recall relevant context. When the user shares important technical decisions, project details, or preferences, proactively store them using create_entities and add_observations. Link related concepts with create_relations."
     }
   }
 }
