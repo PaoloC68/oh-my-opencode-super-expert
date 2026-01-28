@@ -54,7 +54,8 @@ To make an agent memory-aware, add to `oh-my-opencode.json`:
 }
 ```
 or
-```jsonc{
+```jsonc
+{
   "agents": {
     "sisyphus": {
       "prompt_append": "\n\n## Knowledge Systems\n\n**memento** → Cross-project personal knowledge\n- User preferences, decisions, learnings\n- Use when: 'remember that I prefer...', 'what did we decide about...'\n- Tools: create_entities, add_observations, search_nodes\n\n**serena memories** → Project-specific code context\n- Session continuity, codebase understanding\n- Use when: 'continue where we left off', 'what were we working on'\n- Tools: list_memories, prepare_for_new_conversation"
