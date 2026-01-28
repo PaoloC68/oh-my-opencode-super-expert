@@ -53,6 +53,16 @@ To make an agent memory-aware, add to `oh-my-opencode.json`:
   }
 }
 ```
+or
+```
+{
+  "agents": {
+    "sisyphus": {
+      "prompt_append": "\n\nYou have TWO knowledge systems available:\n\n**memento** (persistent memory):\n- Personal knowledge graph for facts, decisions, preferences, project context\n- At session start, use search_nodes to recall relevant context\n- When the user shares important technical decisions, project details, or preferences, proactively store them using create_entities and add_observations\n- Link related concepts with create_relations\n- Use set_importance for critical vs temporary info\n\n**serena** (code analysis):\n- Semantic code navigation and understanding\n- Use for codebase structure, symbol lookup, refactoring\n\nWhen asked to 'remember' something, recall past decisions, or store preferences → ALWAYS use memento tools.\nWhen asked to analyze code, find definitions, or understand architecture → use serena."
+    }
+  }
+}
+```
 
 ## Adding New Plugins
 
