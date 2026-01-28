@@ -48,7 +48,7 @@ To make an agent memory-aware, add to `oh-my-opencode.json`:
 {
   "agents": {
     "sisyphus": {
-      "prompt_append": "\n\nYou have access to a persistent memory system via the 'memory' MCP server. At session start, use search_nodes to recall relevant context. When the user shares important technical decisions, project details, or preferences, proactively store them using create_entities and add_observations. Link related concepts with create_relations."
+      "prompt_append": "\n\n## STRICT TOOL ROUTING\n\n**'knowledge graph' / 'store fact' / 'recall'** → memento\nTools: create_entities, add_observations, search_nodes, read_graph\nExample: 'Add to knowledge graph: user prefers bun over npm'\n\n**'session checkpoint' / 'handoff' / 'continue session'** → serena\nTools: prepare_for_new_conversation, list_memories\nExample: 'Create session checkpoint before I close terminal'\n\nNEVER interpret 'remember' or 'memory' as serena. Default ambiguous requests to memento."
     }
   }
 }
