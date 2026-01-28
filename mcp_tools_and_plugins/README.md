@@ -54,11 +54,10 @@ To make an agent memory-aware, add to `oh-my-opencode.json`:
 }
 ```
 or
-```
-{
+```jsonc{
   "agents": {
     "sisyphus": {
-      "prompt_append": "\n\n## CRITICAL: Two Separate Knowledge Systems\n\n### memento (for remembering facts/decisions)\nTool names: `create_entities`, `add_observations`, `create_relations`, `search_nodes`, `read_graph`, `open_nodes`, `set_importance`, `delete_entities`, `delete_observations`, `delete_relations`\n\nUse memento when:\n- User says 'remember this', 'store this', 'don't forget'\n- Recalling past decisions, preferences, project context\n- Storing technical decisions, rationale, milestones\n- Session start: call search_nodes to load relevant context\n\n### serena (for code navigation ONLY)\nUse serena ONLY when:\n- Analyzing code structure\n- Finding symbol definitions/references\n- Understanding codebase architecture\n\n**RULE: If the request involves memory, remembering, storing facts, or recalling decisions → use memento tools. NEVER use serena for memory operations.**"
+      "prompt_append": "\n\n## Knowledge Systems\n\n**memento** → Cross-project personal knowledge\n- User preferences, decisions, learnings\n- Use when: 'remember that I prefer...', 'what did we decide about...'\n- Tools: create_entities, add_observations, search_nodes\n\n**serena memories** → Project-specific code context\n- Session continuity, codebase understanding\n- Use when: 'continue where we left off', 'what were we working on'\n- Tools: list_memories, prepare_for_new_conversation"
     }
   }
 }
