@@ -75,7 +75,7 @@ In your right window , simply ensure the agent names match the Slim "Pantheon." 
  * Fixer gets the fixer.ts prompt: Focuses on being the "last step between vision and reality," performing fast, parallel execution for well-defined tasks.
 4. Final Adjusted JSON (Manual Migration)
 Apply these changes to lines 38-53 in your right window (oh-my-opencode-slim.json):
-"designer": {
+```"designer": {
   "model": "provider/GLM-4.7-FPB",
   "variant": "medium",
   "temperature": 0.7,
@@ -89,7 +89,7 @@ Apply these changes to lines 38-53 in your right window (oh-my-opencode-slim.jso
   "skills":,
   "mcps":
 }
-
+```
 ⚠️ Critical Proxy Note for the Image
 In your screenshot of the slim config, line 41 shows "agent-browser" under the Designer's skills. Remove this string. Even in the Slim version, enabling agent-browser will cause the agent to attempt an external connection to launch a headless browser, which your corporate Squid proxy will likely block (ERR_ACCESS_DENIED). Keep both skills and mcps arrays empty (``) for maximum stability behind your proxy.
 
