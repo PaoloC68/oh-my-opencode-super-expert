@@ -759,6 +759,14 @@
           "examples": [
             "<leader>h"
           ]
+        },
+        "display_thinking": {
+          "description": "Toggle thinking blocks visibility\n\ndefault: `none`",
+          "default": "none",
+          "type": "string",
+          "examples": [
+            "none"
+          ]
         }
       },
       "additionalProperties": false
@@ -827,6 +835,10 @@
           "description": "Enable mDNS service discovery",
           "type": "boolean"
         },
+        "mdnsDomain": {
+          "description": "Custom domain name for mDNS service (default: opencode.local)",
+          "type": "string"
+        },
         "cors": {
           "description": "Additional domains to allow for CORS",
           "type": "array",
@@ -867,6 +879,20 @@
         ],
         "additionalProperties": false
       }
+    },
+    "skills": {
+      "description": "Additional skill folder paths",
+      "type": "object",
+      "properties": {
+        "paths": {
+          "description": "Additional paths to skill folders",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "watcher": {
       "type": "object",
@@ -955,6 +981,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -1001,9 +1031,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -1360,6 +1406,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -1415,6 +1491,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -1461,9 +1541,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -1820,6 +1916,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -1876,6 +2002,10 @@
           "model": {
             "type": "string"
           },
+          "variant": {
+            "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+            "type": "string"
+          },
           "temperature": {
             "type": "number"
           },
@@ -1922,9 +2052,25 @@
             "additionalProperties": {}
           },
           "color": {
-            "description": "Hex color code for the agent (e.g., #FF5733)",
-            "type": "string",
-            "pattern": "^#[0-9a-fA-F]{6}$"
+            "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "secondary",
+                  "accent",
+                  "success",
+                  "warning",
+                  "error",
+                  "info"
+                ]
+              }
+            ]
           },
           "steps": {
             "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -2281,6 +2427,36 @@
                       "ask",
                       "allow",
                       "deny"
+                    ]
+                  },
+                  "skill": {
+                    "ref": "PermissionRuleConfig",
+                    "anyOf": [
+                      {
+                        "ref": "PermissionActionConfig",
+                        "type": "string",
+                        "enum": [
+                          "ask",
+                          "allow",
+                          "deny"
+                        ]
+                      },
+                      {
+                        "ref": "PermissionObjectConfig",
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "additionalProperties": {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        }
+                      }
                     ]
                   }
                 },
@@ -2341,6 +2517,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -2387,9 +2567,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -2746,6 +2942,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -2801,6 +3027,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -2847,9 +3077,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -3206,6 +3452,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -3261,6 +3537,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -3307,9 +3587,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -3666,6 +3962,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -3721,6 +4047,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -3767,9 +4097,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -4126,6 +4472,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -4181,6 +4557,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -4227,9 +4607,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -4586,6 +4982,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -4641,6 +5067,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -4687,9 +5117,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -5046,6 +5492,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -5101,6 +5577,10 @@
             "model": {
               "type": "string"
             },
+            "variant": {
+              "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+              "type": "string"
+            },
             "temperature": {
               "type": "number"
             },
@@ -5147,9 +5627,25 @@
               "additionalProperties": {}
             },
             "color": {
-              "description": "Hex color code for the agent (e.g., #FF5733)",
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}$"
+              "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "secondary",
+                    "accent",
+                    "success",
+                    "warning",
+                    "error",
+                    "info"
+                  ]
+                }
+              ]
             },
             "steps": {
               "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -5506,6 +6002,36 @@
                         "ask",
                         "allow",
                         "deny"
+                      ]
+                    },
+                    "skill": {
+                      "ref": "PermissionRuleConfig",
+                      "anyOf": [
+                        {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        },
+                        {
+                          "ref": "PermissionObjectConfig",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "ref": "PermissionActionConfig",
+                            "type": "string",
+                            "enum": [
+                              "ask",
+                              "allow",
+                              "deny"
+                            ]
+                          }
+                        }
                       ]
                     }
                   },
@@ -5562,6 +6088,10 @@
           "model": {
             "type": "string"
           },
+          "variant": {
+            "description": "Default model variant for this agent (applies only when using the agent's configured model).",
+            "type": "string"
+          },
           "temperature": {
             "type": "number"
           },
@@ -5608,9 +6138,25 @@
             "additionalProperties": {}
           },
           "color": {
-            "description": "Hex color code for the agent (e.g., #FF5733)",
-            "type": "string",
-            "pattern": "^#[0-9a-fA-F]{6}$"
+            "description": "Hex color code (e.g., #FF5733) or theme color (e.g., primary)",
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "secondary",
+                  "accent",
+                  "success",
+                  "warning",
+                  "error",
+                  "info"
+                ]
+              }
+            ]
           },
           "steps": {
             "description": "Maximum number of agentic iterations before forcing text-only response",
@@ -5967,6 +6513,36 @@
                       "ask",
                       "allow",
                       "deny"
+                    ]
+                  },
+                  "skill": {
+                    "ref": "PermissionRuleConfig",
+                    "anyOf": [
+                      {
+                        "ref": "PermissionActionConfig",
+                        "type": "string",
+                        "enum": [
+                          "ask",
+                          "allow",
+                          "deny"
+                        ]
+                      },
+                      {
+                        "ref": "PermissionObjectConfig",
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "additionalProperties": {
+                          "ref": "PermissionActionConfig",
+                          "type": "string",
+                          "enum": [
+                            "ask",
+                            "allow",
+                            "deny"
+                          ]
+                        }
+                      }
                     ]
                   }
                 },
@@ -6924,6 +7500,36 @@
                 "allow",
                 "deny"
               ]
+            },
+            "skill": {
+              "ref": "PermissionRuleConfig",
+              "anyOf": [
+                {
+                  "ref": "PermissionActionConfig",
+                  "type": "string",
+                  "enum": [
+                    "ask",
+                    "allow",
+                    "deny"
+                  ]
+                },
+                {
+                  "ref": "PermissionObjectConfig",
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "ref": "PermissionActionConfig",
+                    "type": "string",
+                    "enum": [
+                      "ask",
+                      "allow",
+                      "deny"
+                    ]
+                  }
+                }
+              ]
             }
           },
           "additionalProperties": {
@@ -7004,76 +7610,6 @@
     "experimental": {
       "type": "object",
       "properties": {
-        "hook": {
-          "type": "object",
-          "properties": {
-            "file_edited": {
-              "type": "object",
-              "propertyNames": {
-                "type": "string"
-              },
-              "additionalProperties": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "command": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "environment": {
-                      "type": "object",
-                      "propertyNames": {
-                        "type": "string"
-                      },
-                      "additionalProperties": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "command"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            },
-            "session_completed": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "command": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "environment": {
-                    "type": "object",
-                    "propertyNames": {
-                      "type": "string"
-                    },
-                    "additionalProperties": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": [
-                  "command"
-                ],
-                "additionalProperties": false
-              }
-            }
-          },
-          "additionalProperties": false
-        },
-        "chatMaxRetries": {
-          "description": "Number of retries for chat completions on failure",
-          "type": "number"
-        },
         "disable_paste_summary": {
           "type": "boolean"
         },
