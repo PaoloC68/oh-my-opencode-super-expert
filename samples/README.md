@@ -9,7 +9,7 @@
 ---
 
 ## TL;DR
-
+"Wir benötigen einen Server/VM auf dem ein Docker-Container dauerhaft betrieben werden darf, mit Netzwerkzugang zu Bitbucket Server und P API. Den Container erstellen und konfigurieren wir selbst."
 We need a host (VM, bare-metal, or K8s namespace) where a single Docker container can run persistently. The container runs PR-Agent, an open-source tool that auto-generates pull request descriptions using our internal LLM API. IT Security has approved the approach. No external internet access needed — the container talks to exactly two internal endpoints: Bitbucket Server and the LLM API. Resource footprint is ~200–400 MB RAM. Setup takes 1–2 hours once the host is available.
 
 **What we need from infrastructure:**
